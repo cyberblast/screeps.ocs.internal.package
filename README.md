@@ -4,17 +4,22 @@
   https://nodejs.org/en/
 
 2. Install dependencies  
-  `npm i`
+  `npm i`  
 
-3. create a screeps.json file (copy example.screeps.json) & enter login data
+3. clone repository and submodules
+  `git clone --recursive https://github.com/cyberblast/screeps.ocs.internal.package.git`
 
-4. Use commands
+4. create a screeps.json file (copy example.screeps.json) & enter login data
+
+5. Use commands
   * to build (without deployment)  
   `grunt`  
   * to build & deploy  
   `grunt deploy`  
   * to build, compress & deploy  
   `grunt compress-deploy`  
+  * Update Submodules
+  `git submodule update --remote`
 
 ### For a first quickstart regarding the code: __Please have a look at the [Wiki](https://github.com/ScreepsOCS/screeps.behaviour-action-pattern/wiki)!__
 
