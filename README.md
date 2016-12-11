@@ -18,7 +18,7 @@
   `grunt deploy`  
   * to build, compress & deploy  
   `grunt compress-deploy`  
-  * Update Submodules
+  * Update Submodules  
   `git submodule update --remote`
 
 ### For a first quickstart regarding the code: __Please have a look at the [Wiki](https://github.com/ScreepsOCS/screeps.behaviour-action-pattern/wiki)!__
