@@ -6,15 +6,11 @@
 2. Install the grunt CLI  
   `npm install -g grunt-cli`  
 
-3. clone repository and submodules
+3. clone repository and submodules  
   `git clone --recursive https://github.com/cyberblast/screeps.ocs.internal.package.git`
 
 4. Install dependencies  
   `npm i`  
-
-5. load submodules  
-  `git submodule init`  
-  `git submodule update --recursive --remote`  
 
 5. create a screeps.json file (copy example.screeps.json) & enter login data
 
@@ -29,10 +25,9 @@
   `grunt ugly-deploy`  
 
 
-### For a first quickstart regarding the code: __Please have a look at the [Wiki](https://github.com/ScreepsOCS/screeps.behaviour-action-pattern/wiki)!__
-
 ## Links
 
+[behaviour-action-pattern Wiki](https://github.com/ScreepsOCS/screeps.behaviour-action-pattern/wiki)  
 [OCS Constitution](https://github.com/ScreepsGamers/OCS)  
 [OCS on slack](https://screeps.slack.com/messages/ocs)  
 [Alliance map](http://www.leagueofautomatednations.com/a/OCS)  
