@@ -23,8 +23,10 @@
   `grunt`  
   * to build & deploy  
   `grunt deploy`  
-  * to build, compress & deploy  
+  * to build, compress (to single file) & deploy  
   `grunt compress-deploy`  
+  * to build, compress (uglify) & deploy  
+  `grunt ugly-deploy`  
 
 
 ### For a first quickstart regarding the code: __Please have a look at the [Wiki](https://github.com/ScreepsOCS/screeps.behaviour-action-pattern/wiki)!__
