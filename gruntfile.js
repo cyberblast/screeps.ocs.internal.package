@@ -1,5 +1,5 @@
 module.exports = function(grunt) {
-    var config = require('./screeps.json')
+    const config = require('./screeps.json')
     if(!config.branch) {
         config.branch = 'sim'
     }
