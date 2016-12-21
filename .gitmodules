@@ -3,4 +3,4 @@
 	url = https://github.com/Garethp/ScreepsAutocomplete
 [submodule "src"]
 	path = src
-	url = https://github.com/cyberblast/screeps.ocs.internal
+	url = https://github.com/cyberblast/screeps.ocs.internal.git
