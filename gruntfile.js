@@ -18,7 +18,7 @@ module.exports = function(grunt) {
                 ptr: config.ptr
             },
             dist: {
-                src: ['dist/main.js']
+                src: ['dist/*.js']
             }
         },
         clean: ['dist/','pack/'],        
@@ -84,7 +84,7 @@ module.exports = function(grunt) {
         }
     });
     grunt.registerTask('switch-to-pack-deploy', function () {
-        grunt.config.set('screeps.dist.src', ['pack/*.js']);
+        grunt.config.set('screeps.dist.src', ['pack/main.js']);
     });
 
     // clean
