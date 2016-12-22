@@ -22,6 +22,8 @@
   * to build & publish to a folder (define in screeps.json)  
   `grunt publish`  
 
+7. After your first deployment using this repository, please call `delete Memory.modules;` from within the screeps console, to update module references. 
+  *required only once*
 
 ## Links
 
