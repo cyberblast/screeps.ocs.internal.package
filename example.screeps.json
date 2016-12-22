@@ -2,5 +2,6 @@
     "branch": "default",
     "email": "<mail>",
     "password": "<password>",
-    "ptr": false
+    "ptr": false, 
+    "publishDir": "pub/"
 }

@@ -1,10 +1,13 @@
 module.exports = function(grunt) {
-    const config = require('./screeps.json')
+    const config = require('./screeps.json');
     if(!config.branch) {
-        config.branch = 'sim'
+        config.branch = 'sim';
     }
     if(!config.ptr) {
-        config.ptr = false
+        config.ptr = false;
+    }
+    if(!config.publishDir) {
+        config.publishDir = 'pub/';
     }
 
     require('load-grunt-tasks')(grunt);
@@ -42,6 +45,19 @@ module.exports = function(grunt) {
                     cwd: 'ocs.internal/',
                     src: '**',
                     dest: 'dist/',
+                    filter: 'isFile',
+                    rename: function (dest, src) {
+                        // Change the path name. utilize dots for folders
+                        return dest + src.replace(/\//g,'.');
+                    }
+                }]
+            },
+            publish: {
+                files: [{
+                    expand: true,
+                    cwd: 'dist/',
+                    src: '**',
+                    dest: config.publishDir,
                     filter: 'isFile',
                     rename: function (dest, src) {
                         // Change the path name. utilize dots for folders
@@ -96,4 +112,6 @@ module.exports = function(grunt) {
     // uglified (experimental)
     grunt.registerTask('ugly', ['clean', 'copy:public', 'copy:internal', 'webpack', 'uglify']);    
     grunt.registerTask('ugly-deploy', ['clean', 'copy:public', 'copy:internal', 'webpack', 'uglify', 'switch-to-pack-deploy', 'screeps']);
+    // to publishing directory
+    grunt.registerTask('publish', ['clean', 'copy:public', 'copy:internal', 'copy:publish']);
 };

@@ -19,6 +19,8 @@
   `grunt`  
   * to build & deploy  
   `grunt deploy`  
+  * to build & publish to a folder (define in screeps.json)  
+  `grunt publish`  
 
 
 ## Links
