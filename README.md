@@ -19,10 +19,6 @@
   `grunt`  
   * to build & deploy  
   `grunt deploy`  
-  * to build, compress (to single file) & deploy  
-  `grunt compress-deploy`  
-  * to build, compress (uglify) & deploy  
-  `grunt ugly-deploy`  
 
 
 ## Links
