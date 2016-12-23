@@ -103,15 +103,20 @@ module.exports = function(grunt) {
         grunt.config.set('screeps.dist.src', ['pack/main.js']);
     });
 
-    // clean
+    // clean deployment (dry run)
     grunt.registerTask('default', ['clean', 'copy:public', 'copy:internal']);
+    // clean deployment
     grunt.registerTask('deploy', ['clean', 'copy:public', 'copy:internal', 'screeps']);
-    // single file (experimental)
-    grunt.registerTask('compress', ['clean', 'copy:public', 'copy:internal', 'webpack']);
-    grunt.registerTask('compress-deploy', ['clean', 'copy:public', 'copy:internal', 'webpack', 'switch-to-pack-deploy','screeps']);
-    // uglified (experimental)
-    grunt.registerTask('ugly', ['clean', 'copy:public', 'copy:internal', 'webpack', 'uglify']);    
-    grunt.registerTask('ugly-deploy', ['clean', 'copy:public', 'copy:internal', 'webpack', 'uglify', 'switch-to-pack-deploy', 'screeps']);
-    // to publishing directory
+    // clean deployment to directory
     grunt.registerTask('publish', ['clean', 'copy:public', 'copy:internal', 'copy:publish']);
+    // clean deployment (public only)
+    grunt.registerTask('public-deploy', ['clean', 'copy:public', 'screeps']);
+    // single file [experimental] (dry run)
+    grunt.registerTask('compress', ['clean', 'copy:public', 'copy:internal', 'webpack']);
+    // single file [experimental]
+    grunt.registerTask('compress-deploy', ['clean', 'copy:public', 'copy:internal', 'webpack', 'switch-to-pack-deploy','screeps']);
+    // uglified [experimental] (dry run)
+    grunt.registerTask('ugly', ['clean', 'copy:public', 'copy:internal', 'webpack', 'uglify']);    
+    // uglified [experimental]
+    grunt.registerTask('ugly-deploy', ['clean', 'copy:public', 'copy:internal', 'webpack', 'uglify', 'switch-to-pack-deploy', 'screeps']);
 };
