@@ -19,15 +19,16 @@
   `grunt`  
   * to build & deploy  
   `grunt deploy`  
+  * to build & deploy automatically upon saving  
+  `grunt watch`  
   * to build & publish to a folder (define in screeps.json)  
   `grunt publish`  
-  * to build & deploy while developing  
-  `grunt watch`  
 
-7. After your first deployment using this repository, please call `delete Memory.modules;` from within the screeps console, to update module references. *required only once*  
+7. After your first deployment using this repository, please call `delete Memory.modules;` from within the screeps console, to update module references. 
+  *required only once*  
 
 8. You may want to create a directory called `overrides`. Here you'll be able to place `custom.*` and `viral.*` files that will be merged eventually.  
-Please note, that it is required to call `getPath('<originalModuleNameWithoutExtension>', true)`, when adding a new `custom` or `viral` file to bust the cache and enable it.  
+Please note, that it is required to call `getPath('<originalModuleNameWithoutExtension>', true)`, when adding a new `custom.*` or `viral.*` file to bust the cache and enable it.  
 [More about custom overrides](https://github.com/ScreepsOCS/screeps.behaviour-action-pattern/wiki/Custom-Module-Overrides)  
 
 ## Links
