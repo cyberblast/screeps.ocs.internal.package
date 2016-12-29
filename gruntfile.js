@@ -24,7 +24,20 @@ module.exports = function(grunt) {
                 src: ['dist/*.js']
             }
         },
-        clean: ['dist/','pack/'],        
+        watch: {
+            scripts: {
+                files: [
+                    'ocs.public/*.js',
+                    'ocs.internal/*.js',
+                    'overrides/*.js'
+                ],
+                tasks: ['deploy'],
+                options: {
+                    spawn: false
+                }
+            }
+        },
+        clean: ['dist/','pack/'],
         copy: {
             public: {
                 files: [{
@@ -43,6 +56,19 @@ module.exports = function(grunt) {
                 files: [{
                     expand: true,
                     cwd: 'ocs.internal/',
+                    src: '**',
+                    dest: 'dist/',
+                    filter: 'isFile',
+                    rename: function (dest, src) {
+                        // Change the path name. utilize dots for folders
+                        return dest + src.replace(/\//g,'.');
+                    }
+                }]
+            },
+            overrides: {
+                files: [{
+                    expand: true,
+                    cwd: 'overrides/',
                     src: '**',
                     dest: 'dist/',
                     filter: 'isFile',
@@ -99,24 +125,24 @@ module.exports = function(grunt) {
             }
         }
     });
+    // 
     grunt.registerTask('switch-to-pack-deploy', function () {
         grunt.config.set('screeps.dist.src', ['pack/main.js']);
     });
-
     // clean deployment (dry run)
-    grunt.registerTask('default', ['clean', 'copy:public', 'copy:internal']);
+    grunt.registerTask('default', ['clean', 'copy:public', 'copy:internal', 'copy:overrides']);
     // clean deployment
-    grunt.registerTask('deploy', ['clean', 'copy:public', 'copy:internal', 'screeps']);
+    grunt.registerTask('deploy', ['clean', 'copy:public', 'copy:internal', 'copy:overrides', 'screeps']);
     // clean deployment to directory
-    grunt.registerTask('publish', ['clean', 'copy:public', 'copy:internal', 'copy:publish']);
+    grunt.registerTask('publish', ['clean', 'copy:public', 'copy:internal', 'copy:overrides', 'copy:publish']);
     // clean deployment (public only)
     grunt.registerTask('public-deploy', ['clean', 'copy:public', 'screeps']);
     // single file [experimental] (dry run)
-    grunt.registerTask('compress', ['clean', 'copy:public', 'copy:internal', 'webpack']);
+    grunt.registerTask('compress', ['clean', 'copy:public', 'copy:internal', 'copy:overrides', 'webpack']);
     // single file [experimental]
-    grunt.registerTask('compress-deploy', ['clean', 'copy:public', 'copy:internal', 'webpack', 'switch-to-pack-deploy','screeps']);
+    grunt.registerTask('compress-deploy', ['clean', 'copy:public', 'copy:internal', 'copy:overrides', 'webpack', 'switch-to-pack-deploy','screeps']);
     // uglified [experimental] (dry run)
-    grunt.registerTask('ugly', ['clean', 'copy:public', 'copy:internal', 'webpack', 'uglify']);    
+    grunt.registerTask('ugly', ['clean', 'copy:public', 'copy:internal', 'copy:overrides', 'webpack', 'uglify']);
     // uglified [experimental]
-    grunt.registerTask('ugly-deploy', ['clean', 'copy:public', 'copy:internal', 'webpack', 'uglify', 'switch-to-pack-deploy', 'screeps']);
+    grunt.registerTask('ugly-deploy', ['clean', 'copy:public', 'copy:internal', 'copy:overrides', 'webpack', 'uglify', 'switch-to-pack-deploy', 'screeps']);
 };
