@@ -3,16 +3,20 @@
 1. Install Node  
   https://nodejs.org/en/
 
-2. Install the grunt CLI  
+2. Install the grunt CLI (using admin rights/sudo if required)  
   `npm install -g grunt-cli`  
 
 3. Clone repository and submodules  
   `git clone --recursive https://github.com/cyberblast/screeps.ocs.internal.package.git`
 
-4. Install dependencies  
-  `npm i`  
+4. Install dependencies  after changing directory into the newly cloned work area
+  ```
+  cd creeps.ocs.internal.package
+  npm i
+  ```
 
-5. Create a screeps.json file (copy example.screeps.json) & enter login data
+5. Create a screeps.json file (copy example.screeps.json) & enter screeps account login data  
+  `cp example.screeps.json screeps.json`
 
 6. Use commands
   * to build (without deployment)  
