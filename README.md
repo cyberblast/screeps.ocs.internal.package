@@ -47,8 +47,8 @@
   * via Github Desktop
     Click the plus sign at the top left corner, click clone and select `cyberblast`, then `screeps.ocs.internal.package`.  
 
-4. Install dependencies after changing directory into the newly cloned work area
-  `cd creeps.ocs.internal.package`
+4. Install dependencies after changing directory into the newly cloned work area  
+  `cd creeps.ocs.internal.package`  
   `npm i`
 
 5. Create a screeps.json file (copy example.screeps.json) & enter screeps account login data  
@@ -66,7 +66,7 @@
   * to build & publish to a folder (define in screeps.json)  
   `grunt publish`  
 
-2. After your first deployment using this repository, please call `delete Memory.modules;` from within the screeps console, to update module references. 
+2. After your first deployment using this repository, please call `delete Memory.modules;` from within the screeps console, to update module references.  
   *required only once*  
 
 3. You may want to create a directory called `overrides`. Here you'll be able to place `custom.*` and `viral.*` files that will be merged eventually.  
