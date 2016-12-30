@@ -48,10 +48,8 @@
     Click the plus sign at the top left corner, click clone and select `cyberblast`, then `screeps.ocs.internal.package`.  
 
 4. Install dependencies after changing directory into the newly cloned work area
-  ```
-  cd creeps.ocs.internal.package
-  npm i
-  ```
+  `cd creeps.ocs.internal.package`
+  `npm i`
 
 5. Create a screeps.json file (copy example.screeps.json) & enter screeps account login data  
   `cp example.screeps.json screeps.json`
