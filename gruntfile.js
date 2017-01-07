@@ -12,12 +12,17 @@ module.exports = function(grunt) {
 
     require('load-grunt-tasks')(grunt);
 
+    // Override branch in screeps.json
+    // grunt deploy --branch=<customBranch>
+    var branch = false;
+    if(grunt.option('branch')) branch = grunt.option('branch');
+
     grunt.initConfig({
         screeps: {
             options: {
                 email: config.email,
                 password: config.password,
-                branch: config.branch,
+                branch: branch ? branch : config.branch,
                 ptr: config.ptr
             },
             dist: {
