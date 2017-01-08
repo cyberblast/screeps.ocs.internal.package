@@ -22,6 +22,19 @@ module.exports = function(grunt) {
     var branch = false;
     if(grunt.option('branch')) branch = grunt.option('branch');
 
+    const submodules = ['ocs.internal', 'ocs.public'];
+    if (grunt.file.exists('./overrides/.git')) submodules.push('overrides');
+
+    const gitfetch = {};
+    submodules.forEach(function(subdir) {
+        gitfetch[subdir] = {
+            options: {
+                cwd: subdir,
+                all: true,
+            },
+        };
+    });
+
     grunt.initConfig({
         screeps: {
             options: {
@@ -137,6 +150,7 @@ module.exports = function(grunt) {
         reintegrate: {
             options: reintegrate,
         },
+        gitfetch: gitfetch,
     });
     // 
     grunt.registerTask('switch-to-pack-deploy', function () {
@@ -177,27 +191,27 @@ module.exports = function(grunt) {
         for (const subdir in options) {
             optionOutput.gitadd[subdir] = {
                 options: {
-                    cwd: './' + subdir,
+                    cwd: subdir,
                     all: true,
                 }
             };
             optionOutput.gitcommit[subdir] = {
                 options: {
-                    cwd: './' + subdir,
+                    cwd: subdir,
                     message: 'reintegrate ' + subdir + ' before branching to ' + branch,
                     allowEmpty: true,
                 }
             };
             optionOutput.gitcheckout[subdir] = {
                 options: {
-                    cwd: './' + subdir,
+                    cwd: subdir,
                     branch: branch,
                     overwrite: true,
                 }
             };
             optionOutput.gitreset[subdir] = {
                 options: {
-                    cwd: './' + subdir,
+                    cwd: subdir,
                     mode: 'hard',
                     commit: options[subdir].reset,
                 }
@@ -209,7 +223,7 @@ module.exports = function(grunt) {
                     const key = subdir + "-" + merge;
                     optionOutput.gitmerge[key] = {
                         options: {
-                            cwd: './' + subdir,
+                            cwd: subdir,
                             branch: merge,
                         }
                     }
