@@ -9,3 +9,6 @@
 [submodule "lib/ScreepsAutocomplete"]
 	path = lib/ScreepsAutocomplete
 	url = git@github.com:Garethp/ScreepsAutocomplete.git
+[submodule "overrides"]
+	path = overrides
+	url = git@github.com:karlthepagan/screeps.ocs.personal.git
