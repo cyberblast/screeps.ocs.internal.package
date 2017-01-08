@@ -158,7 +158,7 @@ module.exports = function(grunt) {
     grunt.registerTask('ugly', ['clean', 'copy:public', 'copy:internal', 'copy:overrides', 'webpack', 'uglify']);
     // uglified [experimental]
     grunt.registerTask('ugly-deploy', ['clean', 'copy:public', 'copy:internal', 'copy:overrides', 'webpack', 'uglify', 'switch-to-pack-deploy', 'screeps']);
-    grunt.registerTask('reintegrate', 'Create a new integration branch with branches configured from reintegrate.json', function(branch) {
+    grunt.registerTask('reintegrate', 'Create a new integration branch with branches configured from reintegrate.json', function(branch, targetOption) {
         const options = this.options();
         if (Object.getOwnPropertyNames(options).length === 0) {
             grunt.fail.fatal("reintegrate requires external config: reintegrate.json");
@@ -203,7 +203,7 @@ module.exports = function(grunt) {
                 }
             };
 
-            if (options[subdir].merge) {
+            if (targetOption !== "clean" && options[subdir].merge) {
                 for (const merge of options[subdir].merge) {
                     runMerge = true;
                     const key = subdir + "-" + merge;
