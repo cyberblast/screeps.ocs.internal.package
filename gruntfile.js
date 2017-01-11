@@ -1,3 +1,4 @@
+'use strict';
 const optional = require('require-optional');
 
 module.exports = function(grunt) {
