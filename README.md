@@ -76,6 +76,42 @@ Please note, that it is required to call `getPath('<originalModuleNameWithoutExt
 4. Deploy Options
   * `--branch` : Use with `grunt deploy` or `grunt watch` to deploy code to a custom screeps branch.
 
+## Advanced Branch Management
+
+### Reintegrate Documentation
+
+* Create feature mixin branch.
+
+`grunt reintegrate:_BRANCH_[:clean]`
+
+Creates _\_BRANCH\__ from reintegrate.json:_$target_.reset and merges all branches in reintegrate.json:_$target_.merge
+
+* Fetch all submodules
+
+`grunt gitfetch`
+
+Runs git fetch on `ocs.internal`, `ocs.personal`, and `overries` (if overrides contains `.git`).
+
+### Reintegrate Guide
+
+If you find that you want to try multiple feature branches you can use the `reintegrate` feature to automatically merge them into your code.
+
+1. Make sure that all of your virals and personalizations are located in the `overrides/` directory or project root.
+
+2. Modify `/reintegrate.json` or create a copy in your `overrides/` directory. Change the `"reset"` property to indicate
+the branch which you are merging features into (usually `dev`). Add feature branches into the `"merge"` property (make sure
+to include the remote to keep this tidy, e.g. `origin/my-feature-branch`)
+
+3. Decide on a branch name for your integration work. The example used here is `integrationBranch`
+
+4. Run the grunt tasks to update and reintegrate the features you want to use:
+
+`grunt gitfetch reintegrate:integrationBranch`
+
+5. If anything fails try removing feature branches to find a clean mixture. Experienced git users can make use of `git config rerere.enabled true` and manually resolve merge conflicts.
+
+6. To test the current `dev` branches, simply run `grunt gitfetch reintegrate:integrationBranch:clean`
+
 ## Links
 
 [Public repository](https://github.com/ScreepsOCS/screeps.behaviour-action-pattern)  
