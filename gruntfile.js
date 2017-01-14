@@ -14,9 +14,6 @@ module.exports = function(grunt) {
 
     require('load-grunt-tasks')(grunt);
 
-    const reintegrate = optional('./overrides/reintegrate.json')
-        || optional('./reintegrate.json');
-
     // Override branch in screeps.json
     // grunt deploy --branch=<customBranch>
     var branch = false;
@@ -34,6 +31,15 @@ module.exports = function(grunt) {
             },
         };
     });
+
+
+    // override reintegrate formula to reintegrate-mining.json:
+    // grunt reintegrate:<branch> --reintegrate=mining
+    let reintegrateFile = "reintegrate.json";
+    const reintegrateOption = grunt.option('reintegrate') || grunt.option('respec');
+    if (reintegrateOption) reintegrateFile = "reintegrate-" + reintegrateOption + ".json";
+    const reintegrate = optional('./overrides/' + reintegrateFile)
+        || optional('./' + reintegrateFile);
 
     grunt.initConfig({
         screeps: {
@@ -172,11 +178,16 @@ module.exports = function(grunt) {
     grunt.registerTask('ugly', ['clean', 'copy:public', 'copy:internal', 'copy:overrides', 'webpack', 'uglify']);
     // uglified [experimental]
     grunt.registerTask('ugly-deploy', ['clean', 'copy:public', 'copy:internal', 'copy:overrides', 'webpack', 'uglify', 'switch-to-pack-deploy', 'screeps']);
+    grunt.registerTask('re', ['reintegrate']);
     grunt.registerTask('reintegrate', 'Create a new integration branch with branches configured from reintegrate.json', function(branch, targetOption) {
         const options = this.options();
         if (Object.getOwnPropertyNames(options).length === 0) {
             grunt.fail.fatal("reintegrate requires external config: reintegrate.json");
             return false;
+        }
+
+        if (!branch) {
+            branch = 'reintegrate';
         }
 
         const optionOutput = {
