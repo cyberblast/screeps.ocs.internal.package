@@ -67,7 +67,7 @@
   `grunt publish`
   
 2. After your first deployment using this repository, please call `delete Memory.modules;` from within the screeps console, to update module references.  
-  *required only once*  
+  *required only once, or maybe upon changes regarding module loading*  
 
 3. You may want to create a directory called `overrides`. Here you'll be able to place `custom.*` and `viral.*` files that will be merged eventually.  
 Please note, that it is required to call `getPath('<originalModuleNameWithoutExtension>', true)`, when adding a new `custom.*` or `viral.*` file to bust the cache and enable it.  
