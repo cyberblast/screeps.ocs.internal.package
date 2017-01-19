@@ -74,7 +74,7 @@ Please note, that it is required to call `getPath('<originalModuleNameWithoutExt
 [More about custom overrides](https://github.com/ScreepsOCS/screeps.behaviour-action-pattern/wiki/Custom-Module-Overrides)  
 
 4. Deploy Options
-  * `--branch` : Use with `grunt deploy` or `grunt watch` to deploy code to a custom screeps branch.
+  * `--branch` : Use with `grunt deploy` or `grunt watch` to deploy code to a custom screeps branch. Will deploy to branch defined in screeps.json when not specifying --branch on command.
 
 ## Advanced Branch Management
 
