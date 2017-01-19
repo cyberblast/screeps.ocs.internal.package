@@ -44,7 +44,7 @@
 3. Clone repository and submodules  
   * via CLI  
     `git clone --recursive https://github.com/cyberblast/screeps.ocs.internal.package.git`  
-  * via Github Desktop
+  * via Github Desktop  
     Click the plus sign (+) at the top left corner, click clone and select `cyberblast`, then `screeps.ocs.internal.package`.  
 
 4. Install dependencies after changing directory into the newly cloned work area  
