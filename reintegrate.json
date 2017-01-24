@@ -1,0 +1,10 @@
+{
+  "ocs.internal": {
+    "reset": "origin/dev",
+    "merge": []
+  },
+  "ocs.public": {
+    "reset": "origin/dev",
+    "merge": []
+  }
+}

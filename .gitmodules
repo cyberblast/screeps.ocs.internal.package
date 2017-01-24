@@ -1,6 +1,11 @@
-[submodule "ScreepsAutocomplete"]
-	path = ScreepsAutocomplete
-	url = https://github.com/Garethp/ScreepsAutocomplete
-[submodule "src"]
-	path = src
-	url = https://github.com/cyberblast/screeps.ocs.internal
+[submodule "ocs.internal"]
+	path = ocs.internal
+	url = git@github.com:cyberblast/screeps.ocs.internal.git
+	branch = dev
+[submodule "ocs.public"]
+	path = ocs.public
+	url = git@github.com:ScreepsOCS/screeps.behaviour-action-pattern.git
+	branch = dev
+[submodule "lib/ScreepsAutocomplete"]
+	path = lib/ScreepsAutocomplete
+	url = git@github.com:Garethp/ScreepsAutocomplete.git

@@ -1,37 +1,116 @@
+'use strict';
+const optional = require('require-optional');
+
 module.exports = function(grunt) {
-    var config = require('./screeps.json')
+    const config = require('./screeps.json');
     if(!config.branch) {
-        config.branch = 'sim'
+        config.branch = 'sim';
     }
     if(!config.ptr) {
-        config.ptr = false
+        config.ptr = false;
+    }
+    if(!config.publishDir) {
+        config.publishDir = 'pub/';
     }
 
     require('load-grunt-tasks')(grunt);
+
+    const reintegrate = optional('./overrides/reintegrate.json')
+        || optional('./reintegrate.json');
+
+    // Override branch in screeps.json
+    // grunt deploy --branch=<customBranch>
+    var branch = false;
+    if(grunt.option('branch')) branch = grunt.option('branch');
+
+    const submodules = ['ocs.internal', 'ocs.public'];
+    if (grunt.file.exists('./overrides/.git')) submodules.push('overrides');
+
+    const gitfetch = {};
+    submodules.forEach(function(subdir) {
+        gitfetch[subdir] = {
+            options: {
+                cwd: subdir,
+                all: true,
+            },
+        };
+    });
 
     grunt.initConfig({
         screeps: {
             options: {
                 email: config.email,
                 password: config.password,
-                branch: config.branch,
+                branch: branch ? branch : config.branch,
                 ptr: config.ptr
             },
             dist: {
-                src: ['dist/main.js']
+                src: ['dist/*.js']
             }
         },
-        clean: ['dist/','lib/'],        
+        watch: {
+            scripts: {
+                files: [
+                    'ocs.public/*.js',
+                    'ocs.internal/*.js',
+                    'overrides/*.js'
+                ],
+                tasks: ['deploy'],
+                options: {
+                    spawn: false
+                }
+            }
+        },
+        clean: ['dist/','pack/'],
         copy: {
-            screeps: {
+            public: {
                 files: [{
                     expand: true,
-                    cwd: 'src/',
+                    cwd: 'ocs.public/',
                     src: '**',
-                    dest: 'lib/',
+                    dest: 'dist/',
                     filter: 'isFile',
                     rename: function (dest, src) {
-                        // Change the path name utilize dots for folders
+                        // Change the path name. utilize dots for folders
+                        return dest + src.replace(/\//g,'.');
+                    }
+                }]
+            },
+            internal: {
+                files: [{
+                    expand: true,
+                    cwd: 'ocs.internal/',
+                    src: '**',
+                    dest: 'dist/',
+                    filter: 'isFile',
+                    rename: function (dest, src) {
+                        // Change the path name. utilize dots for folders
+                        return dest + src.replace(/\//g,'.');
+                    }
+                }]
+            },
+            overrides: {
+                files: [{
+                    expand: true,
+                    cwd: 'overrides/',
+                    src: '**',
+                    dest: 'dist/',
+                    filter: 'isFile',
+                    rename: function (dest, src) {
+                        // Change the path name. utilize dots for folders
+                        return dest + src.replace(/\//g,'.');
+                    }
+                }]
+            },
+            publish: {
+                files: [{
+                    expand: true,
+                    cwd: 'dist/',
+                    src: '**',
+                    dest: config.publishDir,
+                    filter: 'isFile',
+                    rename: function (dest, src) {
+                        // Change the path name. utilize dots for folders
                         return dest + src.replace(/\//g,'.');
                     }
                 }]
@@ -39,9 +118,9 @@ module.exports = function(grunt) {
         },
         webpack: {
             main: {
-                entry: './lib/main.js',
+                entry: './dist/main.js',
                 output: {
-                    path: 'dist/',
+                    path: 'pack/',
                     filename: 'main.js',
                     libraryTarget: 'commonjs2'
                 },
@@ -63,20 +142,109 @@ module.exports = function(grunt) {
             my_target: {
                 files: [{
                     expand: true,
-                    cwd: 'dist',
+                    cwd: 'pack',
                     src: 'main.js',
-                    dest: 'dist'
+                    dest: 'pack'
                 }]
             }
+        },
+        reintegrate: {
+            options: reintegrate,
+        },
+        gitfetch: gitfetch,
+    });
+    // 
+    grunt.registerTask('switch-to-pack-deploy', function () {
+        grunt.config.set('screeps.dist.src', ['pack/main.js']);
+    });
+    // clean deployment (dry run)
+    grunt.registerTask('default', ['clean', 'copy:public', 'copy:internal', 'copy:overrides']);
+    // clean deployment
+    grunt.registerTask('deploy', ['clean', 'copy:public', 'copy:internal', 'copy:overrides', 'screeps']);
+    // clean deployment to directory
+    grunt.registerTask('publish', ['clean', 'copy:public', 'copy:internal', 'copy:overrides', 'copy:publish']);
+    // clean deployment (public only)
+    grunt.registerTask('public-deploy', ['clean', 'copy:public', 'screeps']);
+    // single file [experimental] (dry run)
+    grunt.registerTask('compress', ['clean', 'copy:public', 'copy:internal', 'copy:overrides', 'webpack']);
+    // single file [experimental]
+    grunt.registerTask('compress-deploy', ['clean', 'copy:public', 'copy:internal', 'copy:overrides', 'webpack', 'switch-to-pack-deploy','screeps']);
+    // uglified [experimental] (dry run)
+    grunt.registerTask('ugly', ['clean', 'copy:public', 'copy:internal', 'copy:overrides', 'webpack', 'uglify']);
+    // uglified [experimental]
+    grunt.registerTask('ugly-deploy', ['clean', 'copy:public', 'copy:internal', 'copy:overrides', 'webpack', 'uglify', 'switch-to-pack-deploy', 'screeps']);
+    grunt.registerTask('reintegrate', 'Create a new integration branch with branches configured from reintegrate.json', function(branch, targetOption) {
+        const options = this.options();
+        if (Object.getOwnPropertyNames(options).length === 0) {
+            grunt.fail.fatal("reintegrate requires external config: reintegrate.json");
+            return false;
+        }
+
+        const optionOutput = {
+            gitadd: {},
+            gitcommit: {},
+            gitcheckout: {},
+            gitreset: {},
+            gitmerge: {},
+        };
+
+        let runMerge = false;
+        for (const subdir in options) {
+            optionOutput.gitadd[subdir] = {
+                options: {
+                    cwd: subdir,
+                    all: true,
+                }
+            };
+            optionOutput.gitcommit[subdir] = {
+                options: {
+                    cwd: subdir,
+                    message: 'reintegrate ' + subdir + ' before branching to ' + branch,
+                    allowEmpty: true,
+                }
+            };
+            optionOutput.gitcheckout[subdir] = {
+                options: {
+                    cwd: subdir,
+                    branch: branch,
+                    overwrite: true,
+                }
+            };
+            optionOutput.gitreset[subdir] = {
+                options: {
+                    cwd: subdir,
+                    mode: 'hard',
+                    commit: options[subdir].reset,
+                }
+            };
+
+            if (targetOption !== "clean" && options[subdir].merge) {
+                for (const merge of options[subdir].merge) {
+                    runMerge = true;
+                    const key = subdir + "-" + merge;
+                    optionOutput.gitmerge[key] = {
+                        options: {
+                            cwd: subdir,
+                            branch: merge,
+                        }
+                    }
+                }
+            }
+        }
+
+        for (const task in optionOutput) {
+            grunt.config(task, optionOutput[task]);
+        }
+
+        grunt.task.run([
+            'gitadd', // add loose files
+            'gitcommit', // commit changes
+            'gitcheckout', // create new branch
+            'gitreset', // reset hard to base branch
+        ]);
+
+        if (runMerge) {
+            grunt.task.run(['gitmerge']); // merge features
         }
     });
-    grunt.registerTask('switch-to-lib-deploy', function () {
-        grunt.config.set('screeps.dist.src', ['lib/*.js']);
-    });
-
-    grunt.registerTask('default', ['clean', 'copy', 'webpack', 'uglify']);
-    grunt.registerTask('compress', ['clean', 'copy', 'webpack']);
-    grunt.registerTask('deploy', ['clean', 'copy', 'switch-to-lib-deploy', 'screeps']);
-    grunt.registerTask('compress-deploy', ['clean', 'copy', 'webpack', 'screeps']);
-    grunt.registerTask('ugly-deploy', ['clean', 'copy', 'webpack', 'uglify', 'screeps']);
 };

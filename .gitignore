@@ -1,7 +1,9 @@
 ### Project specific
 screeps.json
 dist/
-lib/
+pack/
+pub/
+overrides/
 
 ### Dreamweaver template
 # DW Dreamweaver added files
