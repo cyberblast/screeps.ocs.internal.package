@@ -6,10 +6,10 @@ reintegrate() {
     echo -e ${TEXT}Copying $BRANCHTEXT$TEXT reintegrate to $MOD$module$R
     cp ./../overrides/reintegrate.json ./reintegrate-$BRANCH.json
     echo -e ${TEXT}Adding $BRANCHTEXT$TEXT reintegrate to git$R
-    git add reintegrate-$BRANCH.json >nul 2>&1
-    git commit -m $BRANCH >nul 2>&1
+    git add reintegrate-$BRANCH.json >/dev/null 2>&1
+    git commit -m $BRANCH >/dev/null 2>&1
     echo -e ${TEXT}Pushing to $MOD$module\'s $BRANCHTEXT$TEXT branch$R
-    git push -f upstream $BRANCH >nul 2>&1
+    git push -f upstream $BRANCH >/dev/null 2>&1
     echo -e ${UPDATE}Finished $module$R$N
     cd ./..
 }
