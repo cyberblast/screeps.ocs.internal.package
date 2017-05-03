@@ -15,7 +15,8 @@ module.exports = function(grunt) {
 
     require('load-grunt-tasks')(grunt);
 
-    const reintegrate = optional('./overrides/reintegrate.json')
+    const reintegrate = optional(`./overrides/reintegrate-${grunt.option('reintegrate')}.json`)
+        || optional('./overrides/reintegrate.json')
         || optional('./reintegrate.json');
 
     // Override branch in screeps.json
@@ -115,6 +116,14 @@ module.exports = function(grunt) {
                     }
                 }]
             },
+            webpackPublish: {
+                files: [{
+                    expand: true,
+                    cwd: 'pack/',
+                    src: './main.js',
+                    dest: config.publishDir,
+                }]
+            }
         },
         webpack: {
             main: {
@@ -131,7 +140,7 @@ module.exports = function(grunt) {
                         loader: 'babel-loader',
                         query: {
                             presets: [
-                                require.resolve('babel-preset-es2015')
+                                require.resolve('babel-preset-es2016')
                             ]
                         }
                     }]
@@ -169,10 +178,12 @@ module.exports = function(grunt) {
     grunt.registerTask('compress', ['clean', 'copy:public', 'copy:internal', 'copy:overrides', 'webpack']);
     // single file [experimental]
     grunt.registerTask('compress-deploy', ['clean', 'copy:public', 'copy:internal', 'copy:overrides', 'webpack', 'switch-to-pack-deploy','screeps']);
+    grunt.registerTask('compress-publish', ['clean', 'copy:public', 'copy:internal', 'copy:overrides', 'webpack', 'copy:webpackPublish']);
     // uglified [experimental] (dry run)
     grunt.registerTask('ugly', ['clean', 'copy:public', 'copy:internal', 'copy:overrides', 'webpack', 'uglify']);
     // uglified [experimental]
     grunt.registerTask('ugly-deploy', ['clean', 'copy:public', 'copy:internal', 'copy:overrides', 'webpack', 'uglify', 'switch-to-pack-deploy', 'screeps']);
+    grunt.registerTask('ugly-publish', ['clean', 'copy:public', 'copy:internal', 'copy:overrides', 'webpack', 'uglify', 'copy:webpackPublish']);
     grunt.registerTask('reintegrate', 'Create a new integration branch with branches configured from reintegrate.json', function(branch, targetOption) {
         const options = this.options();
         if (Object.getOwnPropertyNames(options).length === 0) {
