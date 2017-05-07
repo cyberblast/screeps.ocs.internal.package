@@ -68,7 +68,7 @@ module.exports = function(grunt) {
                 files: [{
                     expand: true,
                     cwd: 'ocs.public/',
-                    src: '**',
+                    src: ['**/*.js'],
                     dest: 'dist/',
                     filter: 'isFile',
                     rename: function (dest, src) {
@@ -81,7 +81,7 @@ module.exports = function(grunt) {
                 files: [{
                     expand: true,
                     cwd: 'ocs.internal/',
-                    src: '**',
+                    src: ['**/*.js'],
                     dest: 'dist/',
                     filter: 'isFile',
                     rename: function (dest, src) {
@@ -94,7 +94,7 @@ module.exports = function(grunt) {
                 files: [{
                     expand: true,
                     cwd: 'overrides/',
-                    src: '**',
+                    src: ['**/*.js'],
                     dest: 'dist/',
                     filter: 'isFile',
                     rename: function (dest, src) {
@@ -107,7 +107,7 @@ module.exports = function(grunt) {
                 files: [{
                     expand: true,
                     cwd: 'dist/',
-                    src: '**',
+                    src: ['**/*.js'],
                     dest: config.publishDir,
                     filter: 'isFile',
                     rename: function (dest, src) {
@@ -127,11 +127,14 @@ module.exports = function(grunt) {
         },
         webpack: {
             main: {
-                entry: './dist/main.js',
+                entry: ['./dist/main.js'],
                 output: {
                     path: 'pack/',
                     filename: 'main.js',
                     libraryTarget: 'commonjs2'
+                },
+                resolve: {
+                    modulesDirectories: ["web_modules", "node_modules", "dist"],
                 },
                 module: {
                     loaders: [{
